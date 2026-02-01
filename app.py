@@ -8,16 +8,13 @@ from services.barang_service import get_all_barang
 from services.laporan_service import *
 
 if __name__ == "__main__":
-    print("STOK AKHIR")
     print(get_stok_akhir())
 
     laba_barang, total = hitung_laba()
-    print("\nLABA PER BARANG:", laba_barang)
-    print("TOTAL LABA:", total)
+    print("\nLaba per barang:", laba_barang)
+    print("\nTotal laba:", total)
 
-    print("\nBARANG TERLARIS:", barang_terlaris())
-    print("STOK TERENDAH:", barang_stok_terendah())
+    print("\nBarang terlaris:", barang_terlaris())
+    print("\nStok terendah:", barang_stok_terendah().kode)
 
-    print("\nPERINGATAN STOK:")
-    print(peringatan_stok_minimum())
-
+    print("\nPeringatan stok:", peringatan_stok_minimum())

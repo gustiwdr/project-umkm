@@ -5,6 +5,7 @@ untuk pengambilan keputusan.
 
 from utils.file_handler import load_csv
 from config import DATA_BARANG_FILE, DATA_TRANSAKSI_FILE, STOK_MINIMUM
+from models.barang import Barang
 
 def status_stok(stok):
     """
@@ -17,19 +18,32 @@ def status_stok(stok):
     else:
         return "Stok Aman"
     
+def _load_barang_objects():
+    """
+    Helper function:
+    Mengubah data barang dari CSV menjadi objek Barang.
+    """
+    barang_list = load_csv(DATA_BARANG_FILE)
+    objects = []
+
+    for data in barang_list:
+        objects.append(Barang(**data))
+
+    return objects
+    
 def get_stok_akhir():
     """
     Menghitung stok akhir berdasarkan data transaksi.
     """
-    barang_list = load_csv(DATA_BARANG_FILE)
+    barang_objects = _load_barang_objects()
     hasil = []
 
-    for barang in barang_list:
+    for barang in barang_objects:
         hasil.append({
-            "kode": barang["kode"],
-            "nama": barang["nama"],
-            "stok": int(barang["stok"]),
-            "status": status_stok(int(barang["stok"]))
+            "kode": barang.kode,
+            "nama": barang.nama,
+            "stok": barang.stok,
+            "status": status_stok(barang.stok)
         })
     
     return hasil
@@ -38,13 +52,11 @@ def hitung_laba():
     """
     Menghitung laba per barang dan total laba dari seluruh transaksi penjualan.
     """
-    barang_list = load_csv(DATA_BARANG_FILE)
+    barang_objects = _load_barang_objects()
     transaksi_list = load_csv(DATA_TRANSAKSI_FILE)
 
     # Mapping barang berdasarkan kode
-    barang_map = {}
-    for b in barang_list:
-        barang_map[b["kode"]] = b
+    barang_map = {barang.kode: barang for barang in barang_objects}
 
     laba_per_barang = {}
     total_laba = 0
@@ -54,10 +66,11 @@ def hitung_laba():
             kode = trx["kode_barang"]
             jumlah = int(trx["jumlah"])
 
-            harga_beli = int(barang_map[kode]["harga_beli"])
-            harga_jual = int(barang_map[kode]["harga_jual"])
+            barang = barang_map.get(kode)
+            if not barang:
+                continue
 
-            laba = (harga_jual - harga_beli) * jumlah
+            laba = barang.hitung_laba(jumlah)
 
             laba_per_barang[kode] = laba_per_barang.get(kode, 0) + laba
             total_laba += laba
@@ -85,26 +98,26 @@ def barang_stok_terendah():
     """
     Menentukan barang dengan stok terendah.
     """
-    barang_list = load_csv(DATA_BARANG_FILE)
+    barang_objects = _load_barang_objects()
 
-    if not barang_list:
+    if not barang_objects:
         return None
 
-    return min(barang_list, key=lambda b: int(b["stok"]))
+    return min(barang_objects, key=lambda b: b.stok)
 
 def peringatan_stok_minimum():
     """
     Mendapatkan daftar barang yang stoknya di bawah atau sama dengan batas minimum.
     """
-    barang_list = load_csv(DATA_BARANG_FILE)
+    barang_objects = _load_barang_objects()
     peringatan = []
 
-    for barang in barang_list:
-        if int(barang["stok"]) <= STOK_MINIMUM:
+    for barang in barang_objects:
+        if barang.stok <= STOK_MINIMUM:
             peringatan.append({
-                "kode": barang["kode"],
-                "nama": barang["nama"],
-                "stok": int(barang["stok"])
+                "kode": barang.kode,
+                "nama": barang.nama,
+                "stok": barang.stok
             })
 
     return peringatan

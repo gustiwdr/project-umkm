@@ -6,6 +6,8 @@ penjualan dan pembelian barang.
 from utils.file_handler import load_csv, save_csv
 from utils.validator import validate_positive_number
 from config import DATA_TRANSAKSI_FILE, DATA_BARANG_FILE
+from models.barang import Barang
+from models.transaksi import Transaksi
 
 # Struktur kolom file transaksi
 TRANSAKSI_FIELDS = [
@@ -40,11 +42,16 @@ def transaksi_pembelian(kode_transaksi, tanggal, kode_barang, jumlah):
     barang_ditemukan = False
 
     # Update stok barang
-    for barang in barang_list:
-        if barang["kode"] == kode_barang:
-            barang["stok"] = str(int(barang["stok"]) + jumlah)
+    for i, data in enumerate(barang_list):
+        if data["kode"] == kode_barang:
+            barang_obj = Barang(**data)
+            barang_obj.tambah_stok(jumlah)
+
+            # kembalikan ke bentuk dict untuk CSV
+            barang_list[i] = barang_obj.to_dict()
             barang_ditemukan = True
             break
+
 
     # Jika barang tidak ditemukan
     if not barang_ditemukan:
@@ -54,13 +61,14 @@ def transaksi_pembelian(kode_transaksi, tanggal, kode_barang, jumlah):
     save_csv(DATA_BARANG_FILE, BARANG_FIELDS, barang_list)
 
     # Catat/simpan transaksi pembelian
-    simpan_transaksi({
-        "kode_transaksi": kode_transaksi,
-        "tanggal": tanggal,
-        "jenis": "pembelian",
-        "kode_barang": kode_barang,
-        "jumlah": jumlah
-    })
+    trx = Transaksi(
+        kode_transaksi,
+        tanggal,
+        "pembelian",
+        kode_barang,
+        jumlah
+    )
+    simpan_transaksi(trx.to_dict())
 
 def transaksi_penjualan(kode_transaksi, tanggal, kode_barang, jumlah):
     """
@@ -84,16 +92,11 @@ def transaksi_penjualan(kode_transaksi, tanggal, kode_barang, jumlah):
     barang_ditemukan = False
 
     # Update stok barang
-    for barang in barang_list:
-        if barang["kode"] == kode_barang:
-            stok_sekarang = int(barang["stok"])
-
-            # Cek stok cukup atau tidak
-            if stok_sekarang < jumlah:
-                raise ValueError("Stok barang tidak mencukupi untuk penjualan")
-
-            # Kurangi stok
-            barang["stok"] = str(stok_sekarang - jumlah)
+    for i, data in enumerate(barang_list):
+        if data["kode"] == kode_barang:
+            barang_obj = Barang(**data)
+            barang_obj.kurangi_stok(jumlah)
+            barang_list[i] = barang_obj.to_dict()
             barang_ditemukan = True
             break
 
@@ -105,13 +108,14 @@ def transaksi_penjualan(kode_transaksi, tanggal, kode_barang, jumlah):
     save_csv(DATA_BARANG_FILE, BARANG_FIELDS, barang_list)
 
     # Catat/simpan transaksi penjualan
-    simpan_transaksi({
-        "kode_transaksi": kode_transaksi,
-        "tanggal": tanggal,
-        "jenis": "penjualan",
-        "kode_barang": kode_barang,
-        "jumlah": jumlah
-    })
+    trx = Transaksi(
+        kode_transaksi,
+        tanggal,
+        "penjualan",
+        kode_barang,
+        jumlah
+    )
+    simpan_transaksi(trx.to_dict())
 
 def simpan_transaksi(transaksi):
     """
