@@ -31,7 +31,6 @@ def export_stok_to_csv(filename="laporan_stok.csv"):
                 item["status"]
             ])
 
-
 def export_stok_to_pdf(filename="laporan_stok.pdf"):
     """
     Mengekspor laporan stok barang ke file PDF.
