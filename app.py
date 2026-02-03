@@ -3,6 +3,7 @@ Entry point aplikasi (mode CLI).
 Digunakan untuk pengujian logic sebelum GUI.
 """
 
+from services.export_service import export_laba_to_csv, export_stok_to_csv
 from services.transaksi_service import transaksi_pembelian, transaksi_penjualan
 from services.barang_service import get_all_barang
 from services.laporan_service import *
@@ -18,3 +19,6 @@ if __name__ == "__main__":
     print("\nStok terendah:", barang_stok_terendah().kode)
 
     print("\nPeringatan stok:", peringatan_stok_minimum())
+
+    export_stok_to_csv()
+    export_laba_to_csv()

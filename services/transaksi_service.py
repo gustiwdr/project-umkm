@@ -20,7 +20,22 @@ TRANSAKSI_FIELDS = [
 
 BARANG_FIELDS = ["kode", "nama", "harga_beli", "harga_jual", "stok"]
 
-def transaksi_pembelian(kode_transaksi, tanggal, kode_barang, jumlah):
+def generate_kode_transaksi():
+    """
+    Menghasilkan kode transaksi otomatis
+    berdasarkan transaksi terakhir.
+    Format: TRX001, TRX002, dst.
+    """
+    transaksi_list = load_csv(DATA_TRANSAKSI_FILE)
+
+    if not transaksi_list:
+        return "TRX001"
+
+    last_kode = transaksi_list[-1]["kode_transaksi"]
+    nomor = int(last_kode.replace("TRX", ""))
+    return f"TRX{nomor + 1:03d}"
+
+def transaksi_pembelian(tanggal, kode_barang, jumlah):
     """
     Melakukan transaksi pembelian barang.
     Stok barang akan bertambah sesuai jumlah pembelian.
@@ -28,6 +43,8 @@ def transaksi_pembelian(kode_transaksi, tanggal, kode_barang, jumlah):
 
     # Validasi jumlah pembelian
     validate_positive_number(jumlah, "Jumlah Pembelian")
+
+    kode_transaksi = generate_kode_transaksi()
 
     # Ambil data transaksi yang sudah ada
     transaksi_list = load_csv(DATA_TRANSAKSI_FILE)
@@ -70,7 +87,7 @@ def transaksi_pembelian(kode_transaksi, tanggal, kode_barang, jumlah):
     )
     simpan_transaksi(trx.to_dict())
 
-def transaksi_penjualan(kode_transaksi, tanggal, kode_barang, jumlah):
+def transaksi_penjualan(tanggal, kode_barang, jumlah):
     """
     Melakukan transaksi penjualan barang.
     Stok barang akan berkurang sesuai jumlah penjualan.
@@ -78,6 +95,8 @@ def transaksi_penjualan(kode_transaksi, tanggal, kode_barang, jumlah):
 
     # Validasi jumlah penjualan
     validate_positive_number(jumlah, "Jumlah Penjualan")
+
+    kode_transaksi = generate_kode_transaksi()
 
     # Ambil data transaksi yang sudah ada
     transaksi_list = load_csv(DATA_TRANSAKSI_FILE)

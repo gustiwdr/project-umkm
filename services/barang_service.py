@@ -43,3 +43,34 @@ def tambah_barang(barang_data):
 
     # Simpan kembali ke file
     save_csv(DATA_BARANG_FILE, FIELDNAMES, data)
+
+def update_barang(kode, data_baru):
+    """
+    Mengubah data barang berdasarkan kode.
+    """
+    data = load_csv(DATA_BARANG_FILE)
+    ditemukan = False
+
+    for item in data:
+        if item["kode"] == kode:
+            item.update(data_baru)
+            ditemukan = True
+            break
+
+    if not ditemukan:
+        raise ValueError("Barang tidak ditemukan")
+
+    save_csv(DATA_BARANG_FILE, FIELDNAMES, data)
+
+def hapus_barang(kode):
+    """
+    Menghapus data barang berdasarkan kode.
+    """
+    data = load_csv(DATA_BARANG_FILE)
+    data_baru = [item for item in data if item["kode"] != kode]
+
+    if len(data) == len(data_baru):
+        raise ValueError("Barang tidak ditemukan")
+
+    save_csv(DATA_BARANG_FILE, FIELDNAMES, data_baru)
+
