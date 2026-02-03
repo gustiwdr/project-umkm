@@ -17,6 +17,7 @@ analisis sederhana untuk mendukung pengambilan keputusan pada UMKM ritel.
 
 ## Struktur Folder
 
+```
 project-umkm/
 │
 ├── data/ # Dataset CSV
@@ -28,6 +29,7 @@ project-umkm/
 ├── app.py # Entry point aplikasi
 ├── config.py # Konfigurasi aplikasi
 └── README.md
+```
 
 ## Cara Menjalankan Aplikasi
 
