@@ -104,7 +104,8 @@ def laporan_laba():
 
 def export_laporan():
     export_stok_to_csv()
-    export_transaksi_to_csv()
+    export_transaksi_to_csv(jenis="pembelian", filename="laporan_pembelian.csv")
+    export_transaksi_to_csv(jenis="penjualan", filename="laporan_penjualan.csv")
     print("Laporan berhasil diekspor")
 
 

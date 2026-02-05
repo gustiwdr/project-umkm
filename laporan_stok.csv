@@ -1,0 +1,31 @@
+Kode Barang,Nama Barang,Stok,Status
+BRG001,Pulpen,55,Stok Aman
+BRG002,Buku Tulis,40,Stok Aman
+BRG003,Pensil,60,Stok Aman
+BRG004,Penghapus,20,Stok Aman
+BRG005,Penggaris,25,Stok Aman
+BRG006,Spidol,15,Stok Aman
+BRG007,Stabilo,18,Stok Aman
+BRG008,Kertas A4,50,Stok Aman
+BRG009,Map Plastik,30,Stok Aman
+BRG010,Map Kertas,35,Stok Aman
+BRG011,Amplop,40,Stok Aman
+BRG012,Sticky Note,22,Stok Aman
+BRG013,Correction Tape,12,Stok Aman
+BRG014,Correction Pen,14,Stok Aman
+BRG015,Binder,8,Stok Menipis
+BRG016,Isi Binder,10,Stok Menipis
+BRG017,Notebook,16,Stok Aman
+BRG018,Bolpoin Gel,28,Stok Aman
+BRG019,Highlighter Mini,19,Stok Aman
+BRG020,Flashdisk 16GB,7,Stok Menipis
+BRG021,Flashdisk 32GB,6,Stok Menipis
+BRG022,Mouse USB,9,Stok Menipis
+BRG023,Keyboard USB,5,Stok Menipis
+BRG024,Headset,11,Stok Aman
+BRG025,Charger USB,13,Stok Aman
+BRG026,Kabel Data,20,Stok Aman
+BRG027,Powerbank,4,Stok Menipis
+BRG028,Mousepad,18,Stok Aman
+BRG029,CD Blank,26,Stok Aman
+BRG030,DVD Blank,24,Stok Aman

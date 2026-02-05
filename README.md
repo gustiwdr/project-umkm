@@ -39,9 +39,13 @@ project-umkm/
     pip install tkcalendar
     pip install reportlab
    ```
-3. Jalankan aplikasi:
+3. Jalankan aplikasi GUI:
    ```bash
     python3 app.py
+   ```
+4. Jalankan aplikasi CLI:
+   ```bash
+    python3 cli_app.py
    ```
 
 ## Dataset
