@@ -24,9 +24,9 @@ project-umkm/
 ├── gui/ # Antarmuka pengguna (Tkinter)
 ├── models/ # Class OOP (Barang, Transaksi)
 ├── services/ # Logika bisnis aplikasi
-├── tests/ # CLI tests untuk pengujian logic
 ├── utils/ # Utility (file handler, validator)
 ├── app.py # Entry point aplikasi
+├── cli_app.py # Versi CLI aplikasi
 ├── config.py # Konfigurasi aplikasi
 └── README.md
 ```
